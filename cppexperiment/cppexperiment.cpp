@@ -6,9 +6,9 @@
 #include <future>
 #include <any>
 
-int some_task(const uint32_t &size) {
-	std::cout << "input num " << size << '\n';
-	return 1;
+int some_task(const uint32_t &index, const std::vector<int> &input) {
+	std::cout << "input num " << index << '\n';
+	return input[index];
 }
 
 int main()
@@ -17,9 +17,11 @@ int main()
 
 	std::vector<std::future<int> > results;
 	results.resize(N);
+	std::vector<int> inputs(N);
+	std::fill(inputs.begin(), inputs.end(), 1);
 
 	for (uint32_t i = 0; i < N; ++i) {
-		results[i] = std::async(std::launch::async, some_task, i + 1);
+		results[i] = std::async(std::launch::async, some_task, i, inputs);
 		//auto r2 = std::async(std::launch::async, some_task, 2);
 	}
 
